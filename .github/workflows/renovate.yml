@@ -11,7 +11,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Dispatch Renovate PR
-        uses: renovatebot/github-action@v22
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          token: ${{ secrets.RENOVATE_TOKEN }}
+          node-version: '20'
+
+      - name: Install renovate
+        run: npm install -g renovate
+
+      - name: Dispatch Renovate PR
+        run: |
+          RENOVATE_TOKEN="${{ secrets.RENOVATE_TOKEN }}" npx renovate --repository-name ${{ github.repository }} --base-branch main
+
+ 
