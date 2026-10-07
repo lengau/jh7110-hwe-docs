@@ -1,0 +1,6 @@
+{
+  "$schema": "https://docs.renovatebot.com/schema/renovate.json",
+  "extends": ["config:recommended"],
+  "schedule": ["at any time"],
+  "labels": ["dependencies"]
+}
