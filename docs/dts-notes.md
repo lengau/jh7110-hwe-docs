@@ -25,10 +25,10 @@ The domibel branches change only two devicetree files:
 ## Risks and open items (to check on hardware or against the schematic)
 
 1. **RAM size (resolved, pending confirmation).** The CMA pool is fixed at `0x70000000..0x90000000`. The source comment says it "fits in the memory every VisionFive 2 variant has" (2 GB or more). The Mars comes in 1, 2, 4 and 8 GB versions. A 1 GB Mars would not fit it: memory ends at `0x80000000`, so only 256 MiB of the range exists. The user believes this board has 8 GB, which is fine (memory spans `0x40000000..0x240000000`). Confirm with `free -h` or the U-Boot banner on first boot. No patch is needed unless that turns out to be wrong.
-2. **HDMI pins.** The pinmux uses GPIO 0, 1, 14 and 15, put into `jh7110-common.dtsi`, which the Mars shares. We should confirm this against the Mars schematic. It is likely the same as the VF2 because both boards use the same common file, but we have not verified it.
-3. **`cma=` on the command line.** The reference system boots with `cma=128M` in addition to the 512 MiB DT pool. The kernel prefers the command line for the default CMA area, so `cma=128M` may cause the DT pool to be ignored. Try with and without `cma=` on the Mars.
-4. **Mars variants.** The `marscm` boards (CM, CM-Lite, CM-eMMC) are different boards with their own DTS files. We target the plain Mars (`jh7110-milkv-mars.dts`, `compatible = "milkv,mars"`).
-5. **Dual PHY/second GMAC.** Not relevant to the GPU.
+1. **HDMI pins.** The pinmux uses GPIO 0, 1, 14 and 15, put into `jh7110-common.dtsi`, which the Mars shares. We should confirm this against the Mars schematic. It is likely the same as the VF2 because both boards use the same common file, but we have not verified it.
+1. **`cma=` on the command line.** The reference system boots with `cma=128M` in addition to the 512 MiB DT pool. The kernel prefers the command line for the default CMA area, so `cma=128M` may cause the DT pool to be ignored. Try with and without `cma=` on the Mars.
+1. **Mars variants.** The `marscm` boards (CM, CM-Lite, CM-eMMC) are different boards with their own DTS files. We target the plain Mars (`jh7110-milkv-mars.dts`, `compatible = "milkv,mars"`).
+1. **Dual PHY/second GMAC.** Not relevant to the GPU.
 
 ## Patch status
 

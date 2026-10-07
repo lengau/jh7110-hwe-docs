@@ -17,8 +17,8 @@ Built 2026-10-07 on ubhejane. **Build only: nothing has been flashed or written 
 Log: `~/mars-gpu/logs/build-uboot.log`. Takes under a minute. Sources: `worktrees/opensbi` (`v1.9`) and `worktrees/u-boot` (`v2026.07`); see `sources.md`. The script:
 
 1. Builds OpenSBI: `make PLATFORM=generic` into `build/opensbi`, giving `platform/generic/firmware/fw_dynamic.bin`.
-2. Builds U-Boot with `starfive_visionfive2_defconfig` and `OPENSBI=<that fw_dynamic.bin>` into `build/u-boot`.
-3. Builds a second, **debug-UART** variant in `build/u-boot-debuguart`, with the config changes from U-Boot's doc (`DEBUG_UART_NS16550`, base `0x10000000`, clock 24 MHz, shift 2, SBI debug console off, and the same for SPL). SPL is silent without these, because U-Boot proper uses the SBI console. This variant gives output from SPL on the first bring-up.
+1. Builds U-Boot with `starfive_visionfive2_defconfig` and `OPENSBI=<that fw_dynamic.bin>` into `build/u-boot`.
+1. Builds a second, **debug-UART** variant in `build/u-boot-debuguart`, with the config changes from U-Boot's doc (`DEBUG_UART_NS16550`, base `0x10000000`, clock 24 MHz, shift 2, SBI debug console off, and the same for SPL). SPL is silent without these, because U-Boot proper uses the SBI console. This variant gives output from SPL on the first bring-up.
 
 Both builds use a cross-compiler `riscv64-linux-gnu-` (GCC 13.3).
 
@@ -82,7 +82,8 @@ U-Boot's `bootstd` scans for `extlinux/extlinux.conf` and EFI binaries on the bo
    ```
 
    The DTBs are at `~/mars-gpu/out/dtbs/starfive/`, and `fdtdir` expects them below `/boot/dtbs/<release>/starfive/`.
-2. **GRUB EFI** as in the Ubuntu image: Ubuntu's GRUB can load `/boot/dtb-<release>` if present, but it must then be the Mars DTB. Ubuntu's own image uses this route, so check how its `+jh7110` image handles the DTB in Phase 8 before choosing.
+
+1. **GRUB EFI** as in the Ubuntu image: Ubuntu's GRUB can load `/boot/dtb-<release>` if present, but it must then be the Mars DTB. Ubuntu's own image uses this route, so check how its `+jh7110` image handles the DTB in Phase 8 before choosing.
 
 Kernel command line notes:
 

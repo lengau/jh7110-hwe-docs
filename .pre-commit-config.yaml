@@ -11,6 +11,11 @@ repos:
         entry: tombi format
         language: system
         files: \.(toml)$
+      - id: mdformat
+        name: Format Markdown files
+        entry: uv run mdformat
+        language: system
+        files: \.(md)$
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.5.0
     hooks:

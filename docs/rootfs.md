@@ -11,8 +11,11 @@ Status 2026-10-07: the Mesa build is done; the image assembly still has open ite
 ## Mesa 26.2.3 (matches the reference)
 
 - Upstream tag `mesa-26.2.3` (`31e9a6b2e95e30d84bf3177d1f497d063e59b6b2`), the same version the reference repo used. It contains `bxe-4-32` device info (`36.50.54.182`). Checked: 25.2.8 does not.
+
 - Built inside a **riscv64 noble chroot** under `qemu-user` (`build/mesa-chroot`, made with `mmdebstrap --variant=buildd`, build deps installed inside). Script: `scripts/build-mesa.sh` with `configure` and `build` steps; logs `logs/mesa-configure.log`, `logs/mesa-build.log`.
+
 - The build takes about 3 minutes to configure and 12 minutes to build, single-threaded from the host's point of view (emulated `ninja` runs all 80 jobs, but qemu-user makes CPU-heavy compiles slow; ccache helps on rebuilds).
+
 - Configure line (from the script):
 
   ```
@@ -23,11 +26,14 @@ Status 2026-10-07: the Mesa build is done; the image assembly still has open ite
   ```
 
   So we get: the PowerVR Vulkan driver, swrast (llvmpipe), the zink gallium driver (OpenGL ES through Vulkan), EGL/GBM for Wayland and X, with `libvulkan_lvp` (llvmpipe) as the CPU fallback for vulkaninfo.
+
 - Output: `build/mesa-dest/usr/local/` (mounted as `out/mesa/` while building), containing:
+
   - `lib/riscv64-linux-gnu/libvulkan_powervr_mesa.so` (strings confirm `BXE-4-32`, `Mesa 26.2.3 (git-31e9a6b2e9)`)
   - `lib/riscv64-linux-gnu/libvulkan_lvp.so`
   - `share/vulkan/icd.d/powervr_mesa_icd.riscv64.json`
   - `lib/riscv64-linux-gnu/dri/` (zink, swrast, kms_swrast and the other DRI modules), plus EGL, GBM and GLX libraries
+
 - It installs to `/usr/local`, so it will be used ahead of the distro Mesa once copied into the image.
 
 ### Chroot gotchas (what the build needed)

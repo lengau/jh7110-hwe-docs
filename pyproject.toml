@@ -12,12 +12,14 @@ mkdocs = "mkdocs.main:main"
 
 [project.optional-dependencies]
 dev = [
-    "tombi>=1.7.3",
-    "google-yamlfmt>=0.5.1",
+  "tombi>=1.7.3",
+  "google-yamlfmt>=0.5.1",
+  "mdformat>=0.3.10",
 ]
 
 [dependency-groups]
 dev = [
-    "tombi>=1.7.3",
-    "google-yamlfmt>=0.5.1",
+  "google-yamlfmt>=0.5.1",
+  "mdformat>=0.3.10",
+  "tombi>=1.7.3",
 ]

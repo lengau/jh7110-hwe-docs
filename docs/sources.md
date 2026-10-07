@@ -26,7 +26,7 @@ All on ubhejane under `~/mars-gpu/`. Bare clones are in `repos/`, checkouts in `
 Created from `v7.3-rc5` with two `--no-ff` merges, in this order. Both were clean (no conflicts):
 
 1. `domibel/powervr_on_jh7110_visionfive2_v7.3-rc5` (merge `615b70ff4aef`)
-2. `domibel/jh7110_dc8200_hdmi_v7.3-rc5` (merge `54bf2745aa8e`)
+1. `domibel/jh7110_dc8200_hdmi_v7.3-rc5` (merge `54bf2745aa8e`)
 
 The merges use a local git identity set in `linux.git` (`Mars GPU bring-up <ubuntu@ubhejane>`).
 

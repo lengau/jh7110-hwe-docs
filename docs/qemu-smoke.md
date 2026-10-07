@@ -54,7 +54,7 @@ qemu-system-riscv64 -M virt -cpu rv64 -smp 4 -m 4G -nographic -no-reboot \
 - **snapd and LXD themselves:** not run. They need the full rootfs (Phase 6). Re-run the kernel in QEMU against it during Phase 7.
 - **Hardware:** everything JH7110-specific, including the devicetree, GPU, HDMI and cache-ops/errata alternatives.
 
----
+______________________________________________________________________
 
 # Ubuntu 24.04 image under QEMU 11, with our kernel (Phase 4 follow-up)
 

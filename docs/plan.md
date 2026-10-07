@@ -100,12 +100,12 @@ Setup:
 Checks:
 
 1. The kernel boots to the init script, with no panic or oops. Record the `dmesg` warnings.
-2. The modules install tree is usable: copy `out/modules` in (as a disk image or 9p share), run `depmod`, and `modprobe` the container-related modules (`veth`, `bridge`, `nf_tables`, `nft_nat`, `nft_masq`, `tun`, `vxlan`, `macvlan`, `cuse`).
-3. Containers: all namespace types work (`unshare` for user, pid, net, mount, uts, ipc, cgroup, time); cgroup v2 mounts and has the controllers (`cpu`, `memory`, `pids`, `io`, `cpuset`); a veth pair can be created and moved into a netns; `overlayfs` mounts; `fuse` is present (`/dev/fuse`).
-4. Snap: build a tiny squashfs on the host with each compressor (xz, zstd, lz4, lzo, gzip), loop-mount each in the guest, and read a file back. Check xattrs on squashfs.
-5. Security: AppArmor is enabled (`/sys/kernel/security/apparmor`, `/sys/module/apparmor/parameters/enabled` is `Y`) and `cat /sys/kernel/security/lsm` lists `apparmor`. Seccomp filter mode is available (`/proc/self/status` shows `Seccomp`).
-6. `nft` can create a table with a NAT/masquerade chain, if the `nft` binary is in the initramfs.
-7. Save the results in `docs/qemu-smoke.md`, together with the exact command line.
+1. The modules install tree is usable: copy `out/modules` in (as a disk image or 9p share), run `depmod`, and `modprobe` the container-related modules (`veth`, `bridge`, `nf_tables`, `nft_nat`, `nft_masq`, `tun`, `vxlan`, `macvlan`, `cuse`).
+1. Containers: all namespace types work (`unshare` for user, pid, net, mount, uts, ipc, cgroup, time); cgroup v2 mounts and has the controllers (`cpu`, `memory`, `pids`, `io`, `cpuset`); a veth pair can be created and moved into a netns; `overlayfs` mounts; `fuse` is present (`/dev/fuse`).
+1. Snap: build a tiny squashfs on the host with each compressor (xz, zstd, lz4, lzo, gzip), loop-mount each in the guest, and read a file back. Check xattrs on squashfs.
+1. Security: AppArmor is enabled (`/sys/kernel/security/apparmor`, `/sys/module/apparmor/parameters/enabled` is `Y`) and `cat /sys/kernel/security/lsm` lists `apparmor`. Seccomp filter mode is available (`/proc/self/status` shows `Seccomp`).
+1. `nft` can create a table with a NAT/masquerade chain, if the `nft` binary is in the initramfs.
+1. Save the results in `docs/qemu-smoke.md`, together with the exact command line.
 
 Later reuse: once the full rootfs exists (Phase 6), boot that same kernel in QEMU against the real root filesystem, and try `snapd` and `lxd` there as the final software-side check. The rootfs should be Ubuntu riscv64 if we want those two to be the stock packages.
 
@@ -145,11 +145,11 @@ Prerequisites: a serial console (a USB-UART on the 3-pin header, ideally attache
 Steps:
 
 1. Write the premade image to the boot media (the image is downloaded and checked on ubhejane first).
-2. Boot with the serial log captured to `~/mars-gpu/logs/` (`tio -L`). Record the U-Boot banner, board revision, kernel version and boot media.
-3. Collect: `free -h` and `dmesg | grep -i -E "memory|cma"` (**confirms the 8 GB RAM**), `dtc -I fs -O dts /sys/firmware/devicetree/base` (live devicetree), `/proc/cmdline`, `lsmod`, and `dmesg` lines for the DRM, HDMI and GPU drivers if there are any.
-4. Check whether the vendor kernel shows HDMI working, and note which pins and clocks it uses. This is a sanity check on the board only; it does not prove our devicetree pins are right.
-5. Diff the live devicetree against `~/mars-gpu/out/dts-analysis/mars.dts` and update `docs/dts-notes.md`.
-6. Decide the boot method for our own image (SD, eMMC or network) and whether the board can be power-cycled remotely.
+1. Boot with the serial log captured to `~/mars-gpu/logs/` (`tio -L`). Record the U-Boot banner, board revision, kernel version and boot media.
+1. Collect: `free -h` and `dmesg | grep -i -E "memory|cma"` (**confirms the 8 GB RAM**), `dtc -I fs -O dts /sys/firmware/devicetree/base` (live devicetree), `/proc/cmdline`, `lsmod`, and `dmesg` lines for the DRM, HDMI and GPU drivers if there are any.
+1. Check whether the vendor kernel shows HDMI working, and note which pins and clocks it uses. This is a sanity check on the board only; it does not prove our devicetree pins are right.
+1. Diff the live devicetree against `~/mars-gpu/out/dts-analysis/mars.dts` and update `docs/dts-notes.md`.
+1. Decide the boot method for our own image (SD, eMMC or network) and whether the board can be power-cycled remotely.
 
 Answers this phase gives us: RAM size, board revision, bootloader version, boot media, and how the serial and network connections work. It cannot answer the HDMI pin question or the `cma=` question; those need our kernel (Phase 9).
 
@@ -160,12 +160,12 @@ Write the results in `docs/baseline.md`.
 Prerequisites: everything from Phase 8. Anything Phase 8 did not settle still needs an answer.
 
 1. Write the image or set up a network boot, then boot and watch the serial log. Check that `dmesg` shows no `fbdev: Failed to setup emulation (ret=-12)` and that the HDMI console works.
-2. `modprobe powervr`. Check `/dev/dri/renderD128` and the firmware load in `dmesg`.
-3. `PVR_I_WANT_A_BROKEN_VULKAN_DRIVER=1 vulkaninfo --summary` lists `PowerVR B-Series BXE-4-32 MC1`.
-4. `vkmark --winsys headless`, then `--winsys kms`. Then labwc and weston with `glmark2-es2-wayland -b jellyfish`.
-5. Compare against the reference numbers. Save everything under `docs/results/`.
-6. Boot with and without `cma=128M` and compare `dmesg` and `/proc/meminfo` (CmaTotal), to settle whether the command line overrides the 512 MiB pool in the devicetree. The HDMI output working (EDID read, hotplug detected) also confirms the HDMI pins.
-7. Iterate on failures (CMA too small, firmware mismatch, a missing power domain or clock in the DTS, missing cache-ops or errata config, `ErrorOutOfDeviceMemory`). Record each symptom, cause and fix in `docs/troubleshooting.md`.
+1. `modprobe powervr`. Check `/dev/dri/renderD128` and the firmware load in `dmesg`.
+1. `PVR_I_WANT_A_BROKEN_VULKAN_DRIVER=1 vulkaninfo --summary` lists `PowerVR B-Series BXE-4-32 MC1`.
+1. `vkmark --winsys headless`, then `--winsys kms`. Then labwc and weston with `glmark2-es2-wayland -b jellyfish`.
+1. Compare against the reference numbers. Save everything under `docs/results/`.
+1. Boot with and without `cma=128M` and compare `dmesg` and `/proc/meminfo` (CmaTotal), to settle whether the command line overrides the 512 MiB pool in the devicetree. The HDMI output working (EDID read, hotplug detected) also confirms the HDMI pins.
+1. Iterate on failures (CMA too small, firmware mismatch, a missing power domain or clock in the DTS, missing cache-ops or errata config, `ErrorOutOfDeviceMemory`). Record each symptom, cause and fix in `docs/troubleshooting.md`.
 
 ## Docs layout (this repo)
 

@@ -23,3 +23,6 @@ jobs:
       - name: Format YAML files
         run: |
           uv run yamlfmt -lint .
+      - name: Format Markdown files
+        run: |
+          git ls-files -z '*.md' | xargs -0 uv run mdformat --check

@@ -15,10 +15,10 @@ Log: `~/mars-gpu/logs/build-kernel.log`. A build takes about 3 to 11 minutes wit
 The script:
 
 1. Runs `defconfig` in `~/mars-gpu/build/linux-gpu/` (out-of-tree).
-2. Merges every `~/mars-gpu/scripts/*.fragment` (`10-gpu.fragment`, `20-containers.fragment`) with `scripts/kconfig/merge_config.sh`, then `olddefconfig`.
-3. **Fails if any line of the fragment did not survive `olddefconfig`.** This is how we caught the problems below.
-4. Builds `Image modules dtbs` with `ARCH=riscv CROSS_COMPILE="ccache riscv64-linux-gnu-"`.
-5. Installs into `~/mars-gpu/out/`.
+1. Merges every `~/mars-gpu/scripts/*.fragment` (`10-gpu.fragment`, `20-containers.fragment`) with `scripts/kconfig/merge_config.sh`, then `olddefconfig`.
+1. **Fails if any line of the fragment did not survive `olddefconfig`.** This is how we caught the problems below.
+1. Builds `Image modules dtbs` with `ARCH=riscv CROSS_COMPILE="ccache riscv64-linux-gnu-"`.
+1. Installs into `~/mars-gpu/out/`.
 
 ## GPU/display fragment (`scripts/10-gpu.fragment`)
 
