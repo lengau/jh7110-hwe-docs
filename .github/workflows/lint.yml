@@ -29,8 +29,4 @@ jobs:
 
     - name: Format YAML files
         run: |
-          uv run yamlfmt --check
-
-    - name: Format YAML files
-        run: |
-          uv run yamlfmt --check
+          uv run google-yamlfmt --check
