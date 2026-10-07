@@ -5,6 +5,10 @@ on:
     branches:
       - main
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   renovate:
     runs-on: ubuntu-latest
@@ -21,6 +25,6 @@ jobs:
 
       - name: Dispatch Renovate PR
         run: |
-          RENOVATE_TOKEN="${{ secrets.RENOVATE_TOKEN }}" npx renovate --repository-name ${{ github.repository }} --base-branch main
+          npx renovate --repository-name ${{ github.repository }} --base-branch main
 
  
