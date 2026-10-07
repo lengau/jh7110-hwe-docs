@@ -30,3 +30,7 @@ jobs:
     - name: Format YAML files
         run: |
           uv run yamlfmt --check
+
+    - name: Format YAML files
+        run: |
+          uv run yamlfmt --check
