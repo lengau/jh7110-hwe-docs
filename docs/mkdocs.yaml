@@ -1,5 +1,5 @@
 site_name: Milk-V Mars GPU Bring-up
-docs_dir: docs
+docs_dir: .
 nav:
   - Home: index.md
   - Plan: plan.md
