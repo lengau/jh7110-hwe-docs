@@ -24,10 +24,12 @@ jobs:
 
     - name: Install dependencies
       run: |
-        uv pip install mkdocs-material
+        uv lock
+        uv pip compile pyproject.toml --output pyproject.lock
+        uv pip install --reinstall -e .
 
     - name: Build MkDocs site
-      run: mkdocs build --strict --config-file docs/mkdocs.yaml
+      run: uv run mkdocs build --strict --config-file docs/mkdocs.yaml
 
     - name: Upload Pages Artifact
       uses: actions/upload-pages-artifact@v3
