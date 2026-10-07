@@ -1,0 +1,1110 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="..">
+      
+      
+        <link rel="next" href="../host-setup/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Plan - Milk-V Mars GPU Bring-up</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#plan-powervr-gpu-bring-up-on-milk-v-mars" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Milk-V Mars GPU Bring-up" class="md-header__button md-logo" aria-label="Milk-V Mars GPU Bring-up" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Milk-V Mars GPU Bring-up
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Plan
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Milk-V Mars GPU Bring-up" class="md-nav__button md-logo" aria-label="Milk-V Mars GPU Bring-up" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Milk-V Mars GPU Bring-up
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Plan
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#context" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Context
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#upstream-recipe-from-the-reference-repo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Upstream recipe (from the reference repo)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#directory-layout-on-ubhejane" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Directory layout on ubhejane
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phases-all-on-ubhejane" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phases (all on ubhejane)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phases (all on ubhejane)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#phase-0-host-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 0: Host setup
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-1-clone-repositories-and-set-up-worktrees" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 1: Clone repositories and set up worktrees
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-2-inspect-the-mars-devicetree-situation-no-hardware-needed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 2: Inspect the Mars devicetree situation (no hardware needed)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-3-build-the-kernel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 3: Build the kernel
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-4-kernel-smoke-test-in-qemu-on-ubhejane" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 4: Kernel smoke test in QEMU (on ubhejane)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-5-boot-firmware-and-bootloader-build-only" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 5: Boot firmware and bootloader (build only)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-6-root-filesystem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 6: Root filesystem
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-7-pre-hardware-validation-on-ubhejane" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 7: Pre-hardware validation on ubhejane
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-8-baseline-boot-from-a-premade-image-needs-the-mars" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 8: Baseline boot from a premade image (needs the Mars)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-9-our-image-on-the-board-needs-the-mars" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 9: Our image on the board (needs the Mars)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#docs-layout-this-repo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Docs layout (this repo)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#risks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Risks
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#next-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Next step
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../host-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Host setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sources/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sources and pinned commits
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dts-notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Devicetree analysis
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kernel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kernel build
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../qemu-smoke/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    QEMU smoke test
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../boot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Boot firmware and bootloader
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#context" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Context
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#upstream-recipe-from-the-reference-repo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Upstream recipe (from the reference repo)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#directory-layout-on-ubhejane" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Directory layout on ubhejane
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phases-all-on-ubhejane" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phases (all on ubhejane)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phases (all on ubhejane)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#phase-0-host-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 0: Host setup
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-1-clone-repositories-and-set-up-worktrees" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 1: Clone repositories and set up worktrees
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-2-inspect-the-mars-devicetree-situation-no-hardware-needed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 2: Inspect the Mars devicetree situation (no hardware needed)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-3-build-the-kernel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 3: Build the kernel
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-4-kernel-smoke-test-in-qemu-on-ubhejane" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 4: Kernel smoke test in QEMU (on ubhejane)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-5-boot-firmware-and-bootloader-build-only" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 5: Boot firmware and bootloader (build only)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-6-root-filesystem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 6: Root filesystem
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-7-pre-hardware-validation-on-ubhejane" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 7: Pre-hardware validation on ubhejane
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-8-baseline-boot-from-a-premade-image-needs-the-mars" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 8: Baseline boot from a premade image (needs the Mars)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-9-our-image-on-the-board-needs-the-mars" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 9: Our image on the board (needs the Mars)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#docs-layout-this-repo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Docs layout (this repo)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#risks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Risks
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#next-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Next step
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="plan-powervr-gpu-bring-up-on-milk-v-mars">Plan: PowerVR GPU bring-up on Milk-V Mars</h1>
+<p>Goal: reproduce https://github.com/domibel/visionfive2_gpu_bringup (PowerVR BXE-4-32 + DC8200/HDMI on JH7110) on a Milk-V Mars, and verify with <code>vulkaninfo</code>, <code>vkmark</code> and <code>glmark2</code>.</p>
+<p>Strategy: do everything that does not need the board up-front on <strong>ubhejane (10.13.1.3)</strong>, so that the board is only needed for the final boot-and-test phase. This repo holds documentation only (<code>docs/</code>). Old material is in <code>holding/</code> and is not part of this effort.</p>
+<h2 id="context">Context</h2>
+<ul>
+<li>Mars and VisionFive 2 both use the JH7110 SoC, so the GPU (BXE-4-32, BVNC 36.50.54.182) and the display pipeline (DC8200 + Inno HDMI) are the same. The differences are board-level: devicetree, regulators, HDMI connector wiring, boot firmware and storage.</li>
+<li>ubhejane (surveyed 2026-10-06): x86_64, Ubuntu 24.04.5, 80 cores, 1 TiB RAM, 1.6 TiB free, user <code>ubuntu</code> with passwordless sudo. It has <code>git</code>, <code>gcc</code> and <code>make</code>. It lacks the riscv64 cross toolchain, <code>dtc</code>, <code>bison</code>, <code>flex</code>, <code>mmdebstrap</code>, <code>qemu-user-static</code>, <code>tio</code> and any TFTP/NFS server. No serial adapter is attached to it. The apt candidates for <code>gcc-riscv64-linux-gnu</code>, <code>mmdebstrap</code>, <code>qemu-user-static</code> and <code>tio</code> all exist.</li>
+<li>Upstream refs verified on 2026-10-06:</li>
+<li>Mainline tag <code>v7.3-rc5</code> exists (<code>5a956dde</code>). <code>v7.3-rc6</code> also exists.</li>
+<li><code>domibel/linux</code> has <code>jh7110_dc8200_hdmi_v7.3-rc5</code> (<code>95e43ff5</code>) and <code>powervr_on_jh7110_visionfive2_v7.3-rc5</code> (<code>77f50b34</code>). It also has the same pair for <code>v7.3-rc4</code>, <code>v7.2</code>, <code>v7.1-rc5</code> and <code>v7.0.3</code>, which are fallbacks.</li>
+<li>The reference repo's HEAD is <code>3735836d</code>.</li>
+</ul>
+<h2 id="upstream-recipe-from-the-reference-repo">Upstream recipe (from the reference repo)</h2>
+<ul>
+<li>Kernel: <code>v7.3-rc5</code> plus the two <code>domibel/linux</code> branches above, merged in that order (powervr first, then dc8200_hdmi).</li>
+<li>Config additions: <code>DRM_POWERVR=m</code>, <code>DRM_VERISILICON_DC=y</code>, <code>CMA=y</code>, <code>ERRATA_SIFIVE=y</code>, <code>ERRATA_SIFIVE_XPBMTUC=y</code>, <code>STARFIVE_STARLINK_CACHE=y</code>, <code>RISCV_NONSTANDARD_CACHE_OPS=y</code>, <code>DRM_STARFIVE_JH7110_INNO_HDMI=y</code>, <code>PHY_STARFIVE_JH7110_INNO_HDMI=y</code>, <code>SOC_STARFIVE_JH7110_VOUT_SUBSYSTEM=y</code>, <code>SOC_STARFIVE_JH7110_HDMI_SUBSYSTEM=y</code>.</li>
+<li>Kernel cmdline: <code>cma=128M</code> or more (64M fails).</li>
+<li>Firmware: <code>rogue_36.50.54.182_v1.fw</code> from <code>imagination/linux-firmware</code> on gitlab.freedesktop.org, pinned to commit <code>8a58f818</code>, installed in <code>/lib/firmware/powervr/</code>.</li>
+<li>Userspace: Mesa 26.2.x with <code>PVR_I_WANT_A_BROKEN_VULKAN_DRIVER=1</code> and <code>MESA_VK_DEVICE_SELECT=1010:36054182</code>. Tools: <code>vulkan-tools</code>, <code>vkmark</code>, <code>glmark2-es2-wayland</code>, <code>labwc</code>, <code>weston</code>, <code>sway</code>.</li>
+<li>Bootloader: U-Boot 2025.01 or 2026.07, with the DTB loaded from the ESP.</li>
+<li>Reference numbers (README of the reference repo): for example, vkmark KMS 1920x1080: clear 485 fps, cube 140 fps.</li>
+</ul>
+<h2 id="directory-layout-on-ubhejane">Directory layout on ubhejane</h2>
+<p>Everything lives under <code>~/mars-gpu/</code>:</p>
+<pre><code>~/mars-gpu/
+  repos/                bare/mirror clones (shared object stores)
+    linux.git           torvalds/linux, plus remote &quot;domibel&quot;
+    reference.git       domibel/visionfive2_gpu_bringup
+    firmware.git        imagination/linux-firmware
+    mesa.git            mesa/mesa (only if we need a newer Mesa than the distro's)
+    u-boot.git          u-boot/u-boot
+    opensbi.git         riscv-software-src/opensbi
+  worktrees/            one worktree per purpose
+    linux-base          v7.3-rc5, untouched
+    linux-gpu           merged branch &quot;mars-gpu&quot; (the one we build)
+    reference           checkout of the reference repo (README, .config, live DTS, scripts)
+    firmware            pinned firmware commit
+    u-boot              pinned release tag
+    opensbi             pinned release tag
+  build/                out-of-tree build dirs (linux-gpu/, u-boot/, ...)
+  out/                  deliverables: Image, modules, dtbs, rootfs, firmware, boot files
+  patches/              our Mars-specific patch series (git format-patch output)
+  logs/
+  scripts/              all scripted steps below
+</code></pre>
+<h2 id="phases-all-on-ubhejane">Phases (all on ubhejane)</h2>
+<h3 id="phase-0-host-setup">Phase 0: Host setup</h3>
+<ul>
+<li><code>apt install</code>: <code>gcc-riscv64-linux-gnu</code>, <code>g++-riscv64-linux-gnu</code>, <code>device-tree-compiler</code>, <code>bison</code>, <code>flex</code>, <code>libssl-dev</code>, <code>libelf-dev</code>, <code>libncurses-dev</code>, <code>bc</code>, <code>u-boot-tools</code>, <code>swig</code>, <code>python3-dev</code>, <code>python3-setuptools</code>, <code>python3-pyelftools</code>, <code>ccache</code>, <code>mmdebstrap</code>, <code>qemu-user-static</code>, <code>binfmt-support</code>, <code>debian-archive-keyring</code>, <code>ubuntu-keyring</code>, <code>parted</code>, <code>dosfstools</code>, <code>e2fsprogs</code>, <code>kpartx</code>, <code>tio</code>, and <code>tftpd-hpa</code> plus <code>nfs-kernel-server</code> (installed, but left disabled until we pick a boot method).</li>
+<li>Check that <code>qemu-riscv64</code> binfmt is registered after install (<code>/proc/sys/fs/binfmt_misc/qemu-riscv64</code>).</li>
+<li>Create the directory layout above. Install <code>ccache</code> and set it up for the cross compiler.</li>
+<li>Write <code>docs/host-setup.md</code>.</li>
+</ul>
+<h3 id="phase-1-clone-repositories-and-set-up-worktrees">Phase 1: Clone repositories and set up worktrees</h3>
+<ul>
+<li>Clone <code>torvalds/linux</code> as a bare repo in <code>repos/linux.git</code>. Add the <code>domibel</code> remote and fetch the tags and the two <code>v7.3-rc5</code> branches (plus the <code>v7.2</code> pair as a fallback).</li>
+<li>Clone the other repos (reference, firmware, u-boot, opensbi, and Mesa only if needed) as bare repos.</li>
+<li>Create worktrees:</li>
+<li><code>linux-base</code>: detached at <code>v7.3-rc5</code>.</li>
+<li><code>linux-gpu</code>: new branch <code>mars-gpu</code> from <code>v7.3-rc5</code>, then merge <code>domibel/powervr_on_jh7110_visionfive2_v7.3-rc5</code> and <code>domibel/jh7110_dc8200_hdmi_v7.3-rc5</code>. Record any conflicts and how they were resolved.</li>
+<li><code>reference</code>: the reference repo at its current HEAD.</li>
+<li><code>firmware</code>: pinned to <code>8a58f818</code>.</li>
+<li><code>u-boot</code> and <code>opensbi</code>: the latest release tags that the reference (2025.01 / 2026.07) points to.</li>
+<li>Record every pinned commit hash in <code>docs/sources.md</code>, so that moving branches cannot break reproducibility.</li>
+</ul>
+<h3 id="phase-2-inspect-the-mars-devicetree-situation-no-hardware-needed">Phase 2: Inspect the Mars devicetree situation (no hardware needed)</h3>
+<ul>
+<li>In <code>linux-gpu</code>, check whether <code>arch/riscv/boot/dts/starfive/jh7110-milkv-mars.dts</code> exists and what it includes. Build it with <code>make dtbs</code> and decompile with <code>dtc</code>.</li>
+<li>Diff it against <code>jh7110-starfive-visionfive-2-v1.3b.dts</code> and against the reference repo's <code>visionfive2-live.dts</code>. List which GPU, DC8200, HDMI, power-domain, clock and reset nodes are enabled for the VF2 but not for the Mars, and the board-level differences (HDMI pins, hotplug GPIO, regulators, PHY).</li>
+<li>Write a minimal Mars patch (<code>patches/0001-...</code>) that enables the same nodes. Commit it on the <code>mars-gpu</code> branch. Document it in <code>docs/dts-notes.md</code>.</li>
+</ul>
+<h3 id="phase-3-build-the-kernel">Phase 3: Build the kernel</h3>
+<ul>
+<li>Save the config additions as <code>scripts/gpu.fragment</code>.</li>
+<li>In <code>build/linux-gpu/</code>: <code>make ARCH=riscv CROSS_COMPILE="ccache riscv64-linux-gnu-" -C worktrees/linux-gpu O=... defconfig</code>, then merge the fragment with <code>scripts/kconfig/merge_config.sh</code> and run <code>olddefconfig</code>. Check that every config symbol from the fragment survived <code>olddefconfig</code>.</li>
+<li>Build <code>Image</code>, <code>modules</code> and <code>dtbs</code> with <code>-j80</code>. Install the modules into <code>out/modules/</code> and copy <code>Image</code>, <code>jh7110-milkv-mars.dtb</code> and <code>.config</code> into <code>out/</code>.</li>
+<li>Also build the VF2 DTB, so we can compare the two.</li>
+<li>Put the commands in <code>scripts/build-kernel.sh</code>. Write <code>docs/kernel.md</code>.</li>
+</ul>
+<h3 id="phase-4-kernel-smoke-test-in-qemu-on-ubhejane">Phase 4: Kernel smoke test in QEMU (on ubhejane)</h3>
+<p><strong>Status: done 2026-10-07, 67 of 67 checks pass. See <code>qemu-smoke.md</code> for the results, the scripts and what is not covered.</strong> A follow-up boots the same kernel inside a stock Ubuntu 24.04.5 riscv64 image under QEMU 11.1.2 and runs the real snapd and LXD; that also works (<code>qemu-smoke.md</code>, second part). The text below is the original plan; the implemented checks are slightly different in detail (the initramfs is an Ubuntu noble riscv64 extract rather than plain busybox).</p>
+<p>Goal: catch gross kernel problems, and check the container/snap config options, before any hardware is involved. QEMU has no JH7110 machine, so this uses the generic <code>virt</code> machine. The Mars devicetree, the GPU, HDMI and the JH7110-specific drivers are <strong>not</strong> exercised. Those wait for the board.</p>
+<p>Setup:</p>
+<ul>
+<li>Install <code>qemu-system-misc</code> (provides <code>qemu-system-riscv64</code>; the default OpenSBI firmware comes with <code>qemu-system-data</code>).</li>
+<li>Build a small initramfs (busybox, riscv64, via <code>mmdebstrap</code> or the distro's <code>busybox-static</code>) with an init script that runs the checks below and powers off. Keep it in <code>~/mars-gpu/out/qemu/</code>.</li>
+<li>Script <code>scripts/qemu-smoke.sh</code>: <code>qemu-system-riscv64 -M virt -cpu rv64 -smp 4 -m 4G -nographic -kernel out/Image -initrd out/qemu/initramfs.cpio.gz -append "console=ttyS0 ..." -netdev user,id=n0 -device virtio-net-pci,netdev=n0</code>. It logs to <code>~/mars-gpu/logs/qemu-smoke.log</code> and fails on a timeout, a panic, or a failed check.</li>
+</ul>
+<p>Checks:</p>
+<ol>
+<li>The kernel boots to the init script, with no panic or oops. Record the <code>dmesg</code> warnings.</li>
+<li>The modules install tree is usable: copy <code>out/modules</code> in (as a disk image or 9p share), run <code>depmod</code>, and <code>modprobe</code> the container-related modules (<code>veth</code>, <code>bridge</code>, <code>nf_tables</code>, <code>nft_nat</code>, <code>nft_masq</code>, <code>tun</code>, <code>vxlan</code>, <code>macvlan</code>, <code>cuse</code>).</li>
+<li>Containers: all namespace types work (<code>unshare</code> for user, pid, net, mount, uts, ipc, cgroup, time); cgroup v2 mounts and has the controllers (<code>cpu</code>, <code>memory</code>, <code>pids</code>, <code>io</code>, <code>cpuset</code>); a veth pair can be created and moved into a netns; <code>overlayfs</code> mounts; <code>fuse</code> is present (<code>/dev/fuse</code>).</li>
+<li>Snap: build a tiny squashfs on the host with each compressor (xz, zstd, lz4, lzo, gzip), loop-mount each in the guest, and read a file back. Check xattrs on squashfs.</li>
+<li>Security: AppArmor is enabled (<code>/sys/kernel/security/apparmor</code>, <code>/sys/module/apparmor/parameters/enabled</code> is <code>Y</code>) and <code>cat /sys/kernel/security/lsm</code> lists <code>apparmor</code>. Seccomp filter mode is available (<code>/proc/self/status</code> shows <code>Seccomp</code>).</li>
+<li><code>nft</code> can create a table with a NAT/masquerade chain, if the <code>nft</code> binary is in the initramfs.</li>
+<li>Save the results in <code>docs/qemu-smoke.md</code>, together with the exact command line.</li>
+</ol>
+<p>Later reuse: once the full rootfs exists (Phase 6), boot that same kernel in QEMU against the real root filesystem, and try <code>snapd</code> and <code>lxd</code> there as the final software-side check. The rootfs should be Ubuntu riscv64 if we want those two to be the stock packages.</p>
+<p>Known limits: TCG emulation on x86 is slow but fine for a smoke test. KVM on the Mars is not possible (JH7110's U74 cores have no hypervisor extension), so LXD virtual machines are out; only system containers apply.</p>
+<h3 id="phase-5-boot-firmware-and-bootloader-build-only">Phase 5: Boot firmware and bootloader (build only)</h3>
+<p><strong>Status: done 2026-10-07. See <code>boot.md</code>.</strong> Findings: the Mars uses the VisionFive 2 U-Boot build (<code>starfive_visionfive2_defconfig</code>) and U-Boot identifies the Mars from its EEPROM; there is no separate Mars target. Built OpenSBI v1.9 and U-Boot v2026.07 (normal and debug-UART variants); nothing flashed. The text below is the original plan.</p>
+<ul>
+<li>Check whether the Mars needs a custom SPL/U-Boot/OpenSBI build, or whether the vendor firmware already on the board is enough. Build <code>u-boot-spl.bin.normal.out</code> and <code>u-boot.itb</code> for the Mars (<code>starfive_visionfive2_defconfig</code> with the Mars DT, or the Mars target if the pinned U-Boot has one) with OpenSBI as the <code>fw_dynamic</code> payload. Keep the artifacts in <code>out/</code> but do not flash anything until the board phase.</li>
+<li>Write the <code>extlinux.conf</code> / boot script with <code>cma=128M</code> and the Mars DTB path.</li>
+<li>Write <code>docs/boot.md</code>.</li>
+</ul>
+<h3 id="phase-6-root-filesystem">Phase 6: Root filesystem</h3>
+<ul>
+<li>Build a riscv64 rootfs with <code>mmdebstrap --arch=riscv64</code> into <code>out/rootfs/</code> (Debian sid or trixie, whichever has Mesa 26.2.x; check the version first), running under qemu-user.</li>
+<li>Packages: <code>mesa-vulkan-drivers</code>, <code>vulkan-tools</code>, <code>vkmark</code>, <code>glmark2-es2-wayland</code>, <code>labwc</code>, <code>weston</code>, <code>sway</code>, <code>openssh-server</code>, <code>kmod</code>, <code>linux-base</code>, <code>systemd-sysv</code>, <code>network-manager</code> or <code>systemd-networkd</code>, <code>sudo</code>, <code>libdrm-tests</code>, and <code>mesa-utils</code>.</li>
+<li>Install the pinned GPU firmware into <code>/lib/firmware/powervr/</code>, the kernel modules from <code>out/modules/</code>, and the test scripts from the reference repo. Set up users, the <code>render</code> and <code>video</code> groups, the hostname, an SSH key and a serial getty on <code>ttyS0</code> at 115200.</li>
+<li>Package it as an image (<code>out/mars-gpu.img</code>: an ESP or boot partition plus an ext4 root) and, optionally, as a tarball for NFS root.</li>
+<li>Write <code>docs/rootfs.md</code>.</li>
+</ul>
+<h3 id="phase-7-pre-hardware-validation-on-ubhejane">Phase 7: Pre-hardware validation on ubhejane</h3>
+<ul>
+<li>Check the rootfs under <code>qemu-user</code> and <code>chroot</code>: <code>vulkaninfo</code>, <code>vkmark</code> and <code>glmark2</code> binaries run and their libraries resolve (no GPU, so expect only llvmpipe).</li>
+<li>Boot the kernel under <code>qemu-system-riscv64 -M virt</code> with the real rootfs, reusing the Phase 4 script, to catch gross kernel and rootfs problems (the GPU and HDMI will not be present). Try <code>snapd</code> and <code>lxd</code> here if they are installed.</li>
+<li>Check the image: partition table, the files <code>extlinux.conf</code> points to, that the DTB is in place, module dependencies (<code>depmod</code>), and the firmware file's checksum.</li>
+<li>Optional: stand up the TFTP/NFS tree from <code>out/</code> so that a network boot is a matter of enabling the services.</li>
+</ul>
+<h3 id="phase-8-baseline-boot-from-a-premade-image-needs-the-mars">Phase 8: Baseline boot from a premade image (needs the Mars)</h3>
+<p>First contact with the hardware, before any of our own builds. It uses a known-good premade image (for example, a Debian or Ubuntu riscv64 image for the Mars or JH7110) and changes nothing about our kernel.</p>
+<p>Prerequisites: a serial console (a USB-UART on the 3-pin header, ideally attached to ubhejane so that <code>tio</code> can log it), a microSD card or other boot media, and a way to reach the board over the network.</p>
+<p>Steps:</p>
+<ol>
+<li>Write the premade image to the boot media (the image is downloaded and checked on ubhejane first).</li>
+<li>Boot with the serial log captured to <code>~/mars-gpu/logs/</code> (<code>tio -L</code>). Record the U-Boot banner, board revision, kernel version and boot media.</li>
+<li>Collect: <code>free -h</code> and <code>dmesg | grep -i -E "memory|cma"</code> (<strong>confirms the 8 GB RAM</strong>), <code>dtc -I fs -O dts /sys/firmware/devicetree/base</code> (live devicetree), <code>/proc/cmdline</code>, <code>lsmod</code>, and <code>dmesg</code> lines for the DRM, HDMI and GPU drivers if there are any.</li>
+<li>Check whether the vendor kernel shows HDMI working, and note which pins and clocks it uses. This is a sanity check on the board only; it does not prove our devicetree pins are right.</li>
+<li>Diff the live devicetree against <code>~/mars-gpu/out/dts-analysis/mars.dts</code> and update <code>docs/dts-notes.md</code>.</li>
+<li>Decide the boot method for our own image (SD, eMMC or network) and whether the board can be power-cycled remotely.</li>
+</ol>
+<p>Answers this phase gives us: RAM size, board revision, bootloader version, boot media, and how the serial and network connections work. It cannot answer the HDMI pin question or the <code>cma=</code> question; those need our kernel (Phase 9).</p>
+<p>Write the results in <code>docs/baseline.md</code>.</p>
+<h3 id="phase-9-our-image-on-the-board-needs-the-mars">Phase 9: Our image on the board (needs the Mars)</h3>
+<p>Prerequisites: everything from Phase 8. Anything Phase 8 did not settle still needs an answer.</p>
+<ol>
+<li>Write the image or set up a network boot, then boot and watch the serial log. Check that <code>dmesg</code> shows no <code>fbdev: Failed to setup emulation (ret=-12)</code> and that the HDMI console works.</li>
+<li><code>modprobe powervr</code>. Check <code>/dev/dri/renderD128</code> and the firmware load in <code>dmesg</code>.</li>
+<li><code>PVR_I_WANT_A_BROKEN_VULKAN_DRIVER=1 vulkaninfo --summary</code> lists <code>PowerVR B-Series BXE-4-32 MC1</code>.</li>
+<li><code>vkmark --winsys headless</code>, then <code>--winsys kms</code>. Then labwc and weston with <code>glmark2-es2-wayland -b jellyfish</code>.</li>
+<li>Compare against the reference numbers. Save everything under <code>docs/results/</code>.</li>
+<li>Boot with and without <code>cma=128M</code> and compare <code>dmesg</code> and <code>/proc/meminfo</code> (CmaTotal), to settle whether the command line overrides the 512 MiB pool in the devicetree. The HDMI output working (EDID read, hotplug detected) also confirms the HDMI pins.</li>
+<li>Iterate on failures (CMA too small, firmware mismatch, a missing power domain or clock in the DTS, missing cache-ops or errata config, <code>ErrorOutOfDeviceMemory</code>). Record each symptom, cause and fix in <code>docs/troubleshooting.md</code>.</li>
+</ol>
+<h2 id="docs-layout-this-repo">Docs layout (this repo)</h2>
+<pre><code>docs/
+  plan.md             this file
+  host-setup.md       ubhejane packages, directories, access
+  sources.md          every repo, branch and pinned commit
+  kernel.md           merge log, config fragment, build commands
+  dts-notes.md        Mars DT analysis and changes
+  boot.md             U-Boot/OpenSBI/extlinux details
+  rootfs.md           rootfs build and contents
+  qemu-smoke.md       Phase 4: QEMU smoke-test results
+  baseline.md         Phase 8: premade-image boot results and live DT
+  troubleshooting.md  symptoms, causes and fixes
+  results/            logs, vulkaninfo and benchmark output
+</code></pre>
+<h2 id="risks">Risks</h2>
+<ul>
+<li>The <code>domibel</code> branches are rolling and can be force-pushed. We pin commit hashes in <code>docs/sources.md</code> as soon as we fetch them.</li>
+<li>The Mars DTS may need real work beyond enabling nodes. This is the biggest unknown, and we find out in Phase 2, before touching hardware.</li>
+<li>The Vulkan driver is experimental, and the reference results depend on the exact Mesa (26.2.x) and firmware versions. The riscv64 distro may not have that Mesa yet; if not, we build Mesa from <code>mesa.git</code> in the rootfs.</li>
+<li>Without a serial console, early-boot failures are very hard to debug. We need to settle that before Phase 8.</li>
+</ul>
+<h2 id="next-step">Next step</h2>
+<p>Approve this plan, then start with Phase 0 and Phase 1 on ubhejane.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": [], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

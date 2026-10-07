@@ -1,0 +1,811 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../kernel/">
+      
+      
+        <link rel="next" href="../boot/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>QEMU smoke test - Milk-V Mars GPU Bring-up</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#qemu-kernel-smoke-test-phase-4" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Milk-V Mars GPU Bring-up" class="md-header__button md-logo" aria-label="Milk-V Mars GPU Bring-up" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Milk-V Mars GPU Bring-up
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              QEMU smoke test
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Milk-V Mars GPU Bring-up" class="md-nav__button md-logo" aria-label="Milk-V Mars GPU Bring-up" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Milk-V Mars GPU Bring-up
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../host-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Host setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sources/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sources and pinned commits
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dts-notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Devicetree analysis
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kernel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kernel build
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    QEMU smoke test
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    QEMU smoke test
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#scope" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scope
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setup-all-on-ubhejane" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Setup (all on ubhejane)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-passed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What passed
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#things-found-along-the-way" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Things found along the way
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#not-covered" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Not covered
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../boot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Boot firmware and bootloader
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#scope" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scope
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setup-all-on-ubhejane" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Setup (all on ubhejane)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-passed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What passed
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#things-found-along-the-way" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Things found along the way
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#not-covered" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Not covered
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="qemu-kernel-smoke-test-phase-4">QEMU kernel smoke test (Phase 4)</h1>
+<p>Run 2026-10-07 on ubhejane against kernel <code>7.3.0-rc5-00040-g54bf2745aa8e</code> (the build with the GPU and containers fragments). <strong>Result: 67 passed, 0 failed</strong>, in about 12 seconds of wall time.</p>
+<h2 id="scope">Scope</h2>
+<p>QEMU has no JH7110 machine, so this uses the generic <code>virt</code> machine. It checks that the kernel boots and that the container and snap options work. It does <strong>not</strong> exercise the Mars devicetree, the GPU, HDMI, the DC8200 or any JH7110-specific driver. Those need the board.</p>
+<h2 id="setup-all-on-ubhejane">Setup (all on ubhejane)</h2>
+<ul>
+<li>Installed: <code>qemu-system-misc</code> (QEMU 8.2.2), <code>squashfs-tools</code>, <code>lz4</code>, <code>lzop</code>, <code>xz-utils</code>, <code>zstd</code>, <code>cpio</code>.</li>
+<li>Guest userland: Ubuntu 24.04 (noble) riscv64, extracted with <code>mmdebstrap --variant=extract</code> (<code>busybox-static</code>, <code>kmod</code>, <code>nftables</code>, <code>util-linux</code>, <code>iproute2</code>). It is packed as an initramfs together with <code>out/modules</code> and five test squashfs images.</li>
+</ul>
+<p>Scripts, in <code>~/mars-gpu/scripts/</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Script</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>qemu-initramfs.sh</code></td>
+<td>builds <code>out/qemu/initramfs.cpio.gz</code> (rootfs extract + modules + squashfs test images + init)</td>
+</tr>
+<tr>
+<td><code>qemu-init.sh</code></td>
+<td>the guest's <code>/init</code>; runs every check, prints <code>PASS:</code>/<code>FAIL:</code> lines and <code>SMOKE RESULT:</code>, powers off</td>
+</tr>
+<tr>
+<td><code>qemu-smoke.sh</code></td>
+<td>runs QEMU, writes <code>~/mars-gpu/logs/qemu-smoke.log</code>, exits non-zero on any failure or timeout (900 s)</td>
+</tr>
+</tbody>
+</table>
+<p>Rootfs tarball: <code>~/mars-gpu/out/qemu/rootfs.tar</code>. Rebuild the initramfs after every kernel build, because it embeds the modules.</p>
+<p>Command line used by <code>qemu-smoke.sh</code>:</p>
+<pre><code>qemu-system-riscv64 -M virt -cpu rv64 -smp 4 -m 4G -nographic -no-reboot \
+  -kernel out/Image -initrd out/qemu/initramfs.cpio.gz \
+  -append &quot;console=ttyS0 earlycon panic=-1 loglevel=6&quot; \
+  -netdev user,id=n0 -device virtio-net-pci,netdev=n0
+</code></pre>
+<h2 id="what-passed">What passed</h2>
+<ul>
+<li><strong>Boot:</strong> reaches init, with no Oops, BUG, WARNING or panic in <code>dmesg</code>. <code>/proc/meminfo</code> shows <code>CmaTotal</code> 128 MiB (the <code>CMA_SIZE_MBYTES</code> default; the <code>virt</code> devicetree has no 512 MiB pool).</li>
+<li><strong>Modules:</strong> <code>depmod</code> works, and these load with <code>modprobe</code>: <code>veth</code>, <code>bridge</code>, <code>tun</code>, <code>vxlan</code>, <code>macvlan</code>, <code>ipvlan</code>, <code>cuse</code>, <code>dummy</code>, <code>nf_conntrack</code>, <code>nf_tables</code>, <code>nf_nat</code>, <code>nft_ct</code>, <code>nft_nat</code>, <code>nft_masq</code>, <code>nft_compat</code>, <code>nf_conntrack_netlink</code>, <code>ip_tables</code>, <code>ip6_tables</code>, <code>iptable_nat</code>, <code>iptable_filter</code>, <code>xt_MASQUERADE</code>, <code>xt_conntrack</code>, <code>xt_comment</code>, <code>xt_mark</code>, <code>xt_multiport</code>, <code>xt_state</code>, <code>xt_physdev</code>, <code>br_netfilter</code>, <code>8021q</code>.</li>
+<li><strong>Namespaces:</strong> user, pid, net, mount, uts, ipc, cgroup and time, plus a nested user+pid+net+mount combination.</li>
+<li><strong>Cgroup v2:</strong> controllers present: <code>cpuset cpu io memory hugetlb pids rdma misc</code>.</li>
+<li><strong>Networking:</strong> a veth pair moved into a netns; a bridge with a veth enslaved; a dummy interface; <code>/dev/net/tun</code>; the virtio-net device.</li>
+<li><strong>Filesystems:</strong> overlayfs mounts; FUSE is present with <code>/dev/fuse</code>; squashfs images made with gzip, lzo, lz4, xz and zstd (each with a 3 MB incompressible file) loop-mount and read back with the right content and checksum.</li>
+<li><strong>Security:</strong> AppArmor is in the LSM list and enabled, and <code>/sys/kernel/security/apparmor</code> exists. Seccomp and seccomp filters are reported by <code>/proc/self/status</code>.</li>
+<li><strong>nftables:</strong> a <code>nat</code> table with a postrouting masquerade chain, and an <code>inet</code> filter table with a conntrack rule.</li>
+</ul>
+<h2 id="things-found-along-the-way">Things found along the way</h2>
+<ul>
+<li>The default module autoload path <code>/sbin/modprobe</code> does not exist in the guest, so nft's automatic loading failed until <code>/proc/sys/kernel/modprobe</code> was set. This is a guest-image detail, not a kernel problem. The real rootfs needs a working <code>/sbin/modprobe</code> (Ubuntu and Debian have one).</li>
+<li>busybox <code>ash</code> runs its own applets in preference to files in <code>PATH</code>, so the init script calls the real <code>unshare</code>, <code>ip</code> and <code>modprobe</code> by full path.</li>
+</ul>
+<h2 id="not-covered">Not covered</h2>
+<ul>
+<li><strong>Active LSMs:</strong> the running LSM list is only <code>capability,apparmor</code>. <code>defconfig</code> does not build Yama, Lockdown, Landlock or Integrity in (<code>SECURITY_YAMA</code> is off). Neither snapd nor LXD requires them, but Ubuntu normally has Yama (<code>ptrace_scope</code>), so we can add <code>CONFIG_SECURITY_YAMA=y</code> (and the others) later if we want parity.</li>
+<li><strong>AppArmor profile loading:</strong> the interface exists, but we did not load profiles. That needs the <code>apparmor</code> userspace tools in the real rootfs.</li>
+<li><strong>Squashfs xattrs:</strong> the images were built with xattrs, but the guest does not read them back (busybox lacks <code>getfattr</code>).</li>
+<li><strong>snapd and LXD themselves:</strong> not run. They need the full rootfs (Phase 6). Re-run the kernel in QEMU against it during Phase 7.</li>
+<li><strong>Hardware:</strong> everything JH7110-specific, including the devicetree, GPU, HDMI and cache-ops/errata alternatives.</li>
+</ul>
+<hr />
+<h1 id="ubuntu-2404-image-under-qemu-11-with-our-kernel-phase-4-follow-up">Ubuntu 24.04 image under QEMU 11, with our kernel (Phase 4 follow-up)</h1>
+<p>Done 2026-10-07. The minimal initramfs test above shows the kernel boots and the options work. This second test boots the same kernel inside a stock <strong>Ubuntu 24.04.5 riscv64</strong> image, and runs the real snapd and LXD. <strong>Result: it works.</strong></p>
+<h2 id="tooling">Tooling</h2>
+<ul>
+<li><strong>QEMU 11.1.2</strong>, built from source into <code>/opt/qemu-11</code> (see <code>host-setup.md</code>). The 67-check initramfs test passes on it too (<code>QEMU=/opt/qemu-11/bin/qemu-system-riscv64 scripts/qemu-smoke.sh</code>).</li>
+<li>Base image: <code>ubuntu-24.04.5-preinstalled-server-riscv64.img</code> (see <code>sources.md</code>). It boots UEFI: U-Boot, then GRUB, then the kernel. Its stock kernel is <code>7.0.0-31-generic</code>.</li>
+</ul>
+<p>Scripts, in <code>~/mars-gpu/scripts/</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Script</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ubuntu-image.sh</code></td>
+<td>copies the pristine base image to <code>images/work.img</code>, grows it to 24 GB, installs our kernel (<code>/boot/vmlinuz-REL</code>, <code>config-REL</code>, <code>System.map-REL</code>, modules under <code>/usr/lib/modules/REL</code>), runs <code>depmod</code>, <code>update-initramfs</code> and <code>update-grub</code> in a chroot, and writes a cloud-init seed to the <code>CIDATA</code> partition. Re-run it after every kernel build. Always starts from the pristine copy.</td>
+</tr>
+<tr>
+<td><code>ubuntu-qemu.sh</code></td>
+<td>boots <code>work.img</code> under QEMU 11: <code>-M virt -cpu rv64 -smp 8 -m 8G</code>, <code>uboot.elf</code> as the firmware, virtio disk, user-mode networking with <code>localhost:2222</code> forwarded to the guest's ssh, virtio-rng, serial to <code>logs/ubuntu-qemu.log</code>, QEMU monitor on <code>images/monitor.sock</code>, daemonized.</td>
+</tr>
+<tr>
+<td><code>vmssh.sh</code></td>
+<td>ssh into the running guest as <code>ubuntu</code> with the generated key (<code>images/qemu_key</code>).</td>
+</tr>
+</tbody>
+</table>
+<p>The cloud-init seed sets hostname <code>mars-qemu</code>, user <code>ubuntu</code> with password <code>ubuntu</code>, and the key from <code>images/qemu_key.pub</code>. GRUB picks the newest kernel (ours, <code>7.3.0-rc5-...</code>) by default. The stock 7.0.0-31 entry is still there.</p>
+<p>Stop the guest with <code>scripts/vmssh.sh "sudo shutdown -h now"</code>. It powers off cleanly (<code>reboot: Power down</code>, and the QEMU process exits). <strong>The VM is currently stopped.</strong></p>
+<h2 id="results">Results</h2>
+<table>
+<thead>
+<tr>
+<th>Check</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Boots our kernel via U-Boot, then GRUB, with an initramfs from <code>update-initramfs</code></td>
+<td>works. <code>uname -r</code> is <code>7.3.0-rc5-00040-g54bf2745aa8e</code>, and cloud-init reports <code>done</code></td>
+</tr>
+<tr>
+<td>ssh and networking</td>
+<td>works. Slirp gives HTTPS and DNS; ICMP ping does not work in slirp, as usual</td>
+</tr>
+<tr>
+<td>Active LSMs</td>
+<td><code>capability,apparmor</code>. <code>aa-status</code>: 117 profiles loaded, 23 in enforce mode</td>
+</tr>
+<tr>
+<td><code>snapd</code> 2.76.3</td>
+<td>works. It refreshed itself to 2.77.1 and installed <code>core24</code></td>
+</tr>
+<tr>
+<td><code>snap install lxd</code></td>
+<td>works: 5.21.8 LTS (<code>5.21/stable</code>), taking about 3 minutes under emulation. Squashfs snap mounts work</td>
+</tr>
+<tr>
+<td><code>snap install hello-world</code></td>
+<td>fails with "cannot install snap base core". That snap uses the <code>core</code> (16) base, which has no riscv64 build. It is not a kernel problem.</td>
+</tr>
+<tr>
+<td><code>lxd init --auto</code></td>
+<td>works: <code>dir</code> storage pool, <code>lxdbr0</code> bridge (IPv4 and IPv6, using nftables)</td>
+</tr>
+<tr>
+<td><code>lxc launch ubuntu:24.04 c1</code></td>
+<td>works. It picked the riscv64 image automatically, took about 90 seconds, and the container reached <code>running</code> and got an IPv4 and IPv6 address on <code>lxdbr0</code>. Inside it: Ubuntu 24.04.5, the host kernel, DNS, HTTPS to the Ubuntu archive, <code>apt-get update</code>, systemd <code>running</code>, and a 1,000,000,000-ID user namespace map. Seccomp is on, in filter mode.</td>
+</tr>
+</tbody>
+</table>
+<p>Cleanup: the test container <code>c1</code> was deleted. <code>snapd</code>, <code>lxd</code> and <code>core24</code> are installed in <code>work.img</code>. Re-running <code>ubuntu-image.sh</code> gives a fresh image.</p>
+<h2 id="caveats">Caveats</h2>
+<ul>
+<li><code>dmesg</code> has a handful of AppArmor <code>DENIED</code> audit lines: <code>snap-confine</code> mount with <code>rw, rbind</code>, and the <code>snap.lxd.lxd</code> and <code>snap.lxd.lxc</code> profiles being denied <code>dac_override</code> and <code>dac_read_search</code>. Everything we tried worked, so I think they are the usual snap profile noise. We have not compared against the stock <code>7.0.0-31</code> kernel. Easy to do: pick it in GRUB and repeat the snap and LXD steps.</li>
+<li>The kernel log has no BUG, WARNING or Oops lines.</li>
+<li>Not covered: LXD virtual machines (not possible on the JH7110, see <code>kernel.md</code>), the GPU and HDMI stack, and anything specific to the Mars hardware.</li>
+<li>The Ubuntu image is Ubuntu. For Phase 6 this settles that Ubuntu riscv64 is a workable root filesystem for snapd and LXD with this kernel.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": [], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,24 @@
+site_name: Milk-V Mars GPU Bring-up
+docs_dir: .
+nav:
+  - Home: index.md
+  - Plan: plan.md
+  - Host setup: host-setup.md
+  - Sources and pinned commits: sources.md
+  - Devicetree analysis: dts-notes.md
+  - Kernel build: kernel.md
+  - QEMU smoke test: qemu-smoke.md
+  - Boot firmware and bootloader: boot.md
+
+# Configuration for GitHub Pages deployment
+# This setup uses the Material for MkDocs theme and targets the 'gh-pages' branch
+theme:
+  name: material
+
+site_dir: ../site
+# Setting the baseurl is crucial for GitHub Pages if the repo is not hosted at the root domain
+# baseurl: ""
+
+# Define plugins if necessary, but we'll keep it simple for now.
+# plugins:
+#   - search

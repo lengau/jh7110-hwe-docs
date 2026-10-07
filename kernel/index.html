@@ -1,0 +1,763 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../dts-notes/">
+      
+      
+        <link rel="next" href="../qemu-smoke/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Kernel build - Milk-V Mars GPU Bring-up</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#kernel-build-phase-3" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Milk-V Mars GPU Bring-up" class="md-header__button md-logo" aria-label="Milk-V Mars GPU Bring-up" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Milk-V Mars GPU Bring-up
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Kernel build
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Milk-V Mars GPU Bring-up" class="md-nav__button md-logo" aria-label="Milk-V Mars GPU Bring-up" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Milk-V Mars GPU Bring-up
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../host-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Host setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sources/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sources and pinned commits
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dts-notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Devicetree analysis
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kernel build
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kernel build
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#build" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Build
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gpudisplay-fragment-scripts10-gpufragment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GPU/display fragment (scripts/10-gpu.fragment)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#containers-and-snap-fragment-scripts20-containersfragment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Containers and snap fragment (scripts/20-containers.fragment)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#outputs-mars-gpuout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Outputs (~/mars-gpu/out/)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Notes
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../qemu-smoke/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    QEMU smoke test
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../boot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Boot firmware and bootloader
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#build" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Build
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gpudisplay-fragment-scripts10-gpufragment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GPU/display fragment (scripts/10-gpu.fragment)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#containers-and-snap-fragment-scripts20-containersfragment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Containers and snap fragment (scripts/20-containers.fragment)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#outputs-mars-gpuout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Outputs (~/mars-gpu/out/)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Notes
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="kernel-build-phase-3">Kernel build (Phase 3)</h1>
+<p>Built 2026-10-07 on ubhejane (rebuilt clean the same day with the containers fragment). Source: <code>~/mars-gpu/worktrees/linux-gpu</code>, branch <code>mars-gpu</code>, commit <code>54bf2745aa8e</code> (<code>v7.3-rc5</code> plus the two domibel merges; see <code>sources.md</code>). Kernel release string: <code>7.3.0-rc5-00040-g54bf2745aa8e</code>.</p>
+<h2 id="build">Build</h2>
+<pre><code>~/mars-gpu/scripts/build-kernel.sh      # JOBS=80 by default
+CLEAN=1 ~/mars-gpu/scripts/build-kernel.sh   # wipe the build dir first
+CLEAN=1 CONFIG_ONLY=1 ~/mars-gpu/scripts/build-kernel.sh   # configure and verify only
+</code></pre>
+<p>Log: <code>~/mars-gpu/logs/build-kernel.log</code>. A build takes about 3 to 11 minutes with 80 jobs. There are no compiler errors or warnings; the only warnings are perl locale noise.</p>
+<p>The script:</p>
+<ol>
+<li>Runs <code>defconfig</code> in <code>~/mars-gpu/build/linux-gpu/</code> (out-of-tree).</li>
+<li>Merges every <code>~/mars-gpu/scripts/*.fragment</code> (<code>10-gpu.fragment</code>, <code>20-containers.fragment</code>) with <code>scripts/kconfig/merge_config.sh</code>, then <code>olddefconfig</code>.</li>
+<li><strong>Fails if any line of the fragment did not survive <code>olddefconfig</code>.</strong> This is how we caught the problems below.</li>
+<li>Builds <code>Image modules dtbs</code> with <code>ARCH=riscv CROSS_COMPILE="ccache riscv64-linux-gnu-"</code>.</li>
+<li>Installs into <code>~/mars-gpu/out/</code>.</li>
+</ol>
+<h2 id="gpudisplay-fragment-scripts10-gpufragment">GPU/display fragment (<code>scripts/10-gpu.fragment</code>)</h2>
+<p>The reference repo's 11 options:</p>
+<pre><code>CONFIG_DRM_POWERVR=m
+CONFIG_DRM_VERISILICON_DC=y
+CONFIG_CMA=y
+CONFIG_ERRATA_SIFIVE=y
+CONFIG_ERRATA_SIFIVE_XPBMTUC=y
+CONFIG_STARFIVE_STARLINK_CACHE=y
+CONFIG_RISCV_NONSTANDARD_CACHE_OPS=y
+CONFIG_DRM_STARFIVE_JH7110_INNO_HDMI=y
+CONFIG_PHY_STARFIVE_JH7110_INNO_HDMI=y
+CONFIG_SOC_STARFIVE_JH7110_VOUT_SUBSYSTEM=y
+CONFIG_SOC_STARFIVE_JH7110_HDMI_SUBSYSTEM=y
+</code></pre>
+<p>Our additions. The reference repo starts from a Debian config, which already has these. Our start is the upstream <code>defconfig</code>, which does not:</p>
+<pre><code>CONFIG_DRM=y
+CONFIG_DRM_DISPLAY_CONNECTOR=y
+CONFIG_CLK_STARFIVE_JH7110_VOUT=y
+CONFIG_DRM_FBDEV_EMULATION=y
+CONFIG_FB=y
+CONFIG_FRAMEBUFFER_CONSOLE=y
+CONFIG_DMA_CMA=y
+CONFIG_CMA_SIZE_MBYTES=128
+</code></pre>
+<p>Why each is needed:</p>
+<ul>
+<li><code>DRM=y</code>: upstream <code>defconfig</code> has <code>DRM=m</code>, and Kconfig silently reduced <code>DRM_VERISILICON_DC=y</code> and <code>DRM_STARFIVE_JH7110_INNO_HDMI=y</code> to <code>m</code> (the first run of the script reported both as not applied). The display drivers are meant to be built in so the framebuffer console appears early, so <code>DRM</code> must be built in too.</li>
+<li><code>DRM_DISPLAY_CONNECTOR=y</code>: the devicetree has an <code>hdmi-connector</code> node, and this driver binds it. It was not set in <code>defconfig</code>.</li>
+<li><code>CLK_STARFIVE_JH7110_VOUT=y</code>: the display clock/reset controller (<code>voutcrg</code>). It has to be built in for the built-in display drivers to probe early.</li>
+<li><code>DMA_CMA=y</code>, <code>CMA_SIZE_MBYTES=128</code>: <code>defconfig</code> had <code>CMA=y</code> but not <code>DMA_CMA</code>, which the devicetree's <code>linux,cma</code> pool needs in order to be used at all. The 128 MiB default matches the reference's Debian config.</li>
+<li><code>DRM_FBDEV_EMULATION</code>, <code>FB</code>, <code>FRAMEBUFFER_CONSOLE</code>: console on HDMI, as in the reference.</li>
+</ul>
+<p>This is our best reading of the reference setup. It is not yet tested on hardware. Update this list if boot testing shows something else is needed.</p>
+<h2 id="containers-and-snap-fragment-scripts20-containersfragment">Containers and snap fragment (<code>scripts/20-containers.fragment</code>)</h2>
+<p>Added for running LXD system containers and snapd. A clean rebuild with it succeeded (2026-10-07). The script confirmed every line landed in the final <code>.config</code>. Contents, by purpose:</p>
+<ul>
+<li><strong>Squashfs for snaps:</strong> <code>SQUASHFS=y</code> with <code>XATTR</code>, <code>FILE_DIRECT</code>, per-CPU parallel decompression (<code>SQUASHFS_COMPILE_DECOMP_MULTI_PERCPU</code>), and every compressor (<code>ZLIB</code>, <code>LZ4</code>, <code>LZO</code>, <code>XZ</code>, <code>ZSTD</code>); <code>BLK_DEV_LOOP=y</code>, <code>4K_DEVBLK_SIZE</code>.</li>
+<li><strong>Filesystems and devices:</strong> <code>FUSE_FS=y</code>, <code>CUSE=m</code>, <code>OVERLAY_FS=y</code> (was <code>m</code>), <code>FANOTIFY=y</code>, <code>TUN=m</code>, <code>BINFMT_MISC=m</code>.</li>
+<li><strong>Cgroups and misc:</strong> <code>PSI</code>, <code>CGROUP_MISC</code>, <code>CGROUP_RDMA</code>, <code>CGROUP_NET_PRIO</code>, <code>USERFAULTFD</code>, <code>BPF_JIT</code>. The <code>defconfig</code> already had namespaces (user, pid, net, uts, ipc), cgroups (memory, pids, freezer, device, cpuset, bpf, blkio, CFS bandwidth), seccomp filter, audit, keys, veth, bridge, macvlan, ipvlan, vxlan, POSIX mqueue, <code>FHANDLE</code> and checkpoint/restore.</li>
+<li><strong>AppArmor:</strong> <code>SECURITY_APPARMOR</code> was already <code>y</code>, but <code>defconfig</code>'s <code>CONFIG_LSM</code> string did not include it, so it would never have been active. Now <code>CONFIG_LSM="landlock,lockdown,yama,integrity,apparmor,bpf"</code> and <code>DEFAULT_SECURITY_APPARMOR=y</code>.</li>
+<li><strong>Networking for LXD bridges:</strong> nftables (<code>NF_TABLES</code>, <code>NF_NAT</code>, <code>NFT_CT</code>, <code>NFT_NAT</code>, <code>NFT_MASQ</code>, <code>NFT_REDIR</code>, <code>NFT_REJECT</code>, <code>NFT_LOG</code>, <code>NFT_LIMIT</code>, <code>NFT_COMPAT</code>, <code>NF_TABLES_INET</code>, <code>NF_TABLES_BRIDGE</code>), <code>NF_CT_NETLINK</code>, <code>IP_MULTIPLE_TABLES</code>, <code>IPV6_MULTIPLE_TABLES</code>, and the xtables targets and matches that <code>iptables-nft</code> needs (<code>NAT</code>, <code>MASQUERADE</code>, <code>CHECKSUM</code>, <code>CT</code>, <code>comment</code>, <code>mark</code>, <code>multiport</code>, <code>state</code>, <code>physdev</code>). Also the legacy iptables tables (<code>NETFILTER_XTABLES_LEGACY</code>, <code>IP_NF_IPTABLES_LEGACY</code>, <code>IP6_NF_IPTABLES_LEGACY</code> and the <code>filter</code>, <code>nat</code>, <code>mangle</code> and masquerade tables for IPv4 and IPv6), so legacy <code>iptables</code> also works.</li>
+</ul>
+<p>Three fragment lines needed correcting during the first attempt, because the symbol names differ in 7.3: <code>NF_CONNTRACK_NETLINK</code> is <code>NF_CT_NETLINK</code>, <code>NFT_COUNTER</code> no longer exists (it is part of the nf_tables core), and the squashfs decompressor choice is <code>SQUASHFS_COMPILE_DECOMP_MULTI_PERCPU</code>.</p>
+<p>Not enabled: vsock and virtio-fs, <code>KVM</code> guests (the JH7110's U74 cores have no hypervisor extension, so LXD virtual machines cannot work; system containers can), and <code>RT_GROUP_SCHED</code> (it would break cgroup v2 CPU control).</p>
+<h2 id="outputs-mars-gpuout">Outputs (<code>~/mars-gpu/out/</code>)</h2>
+<table>
+<thead>
+<tr>
+<th>Path</th>
+<th>Contents</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Image</code></td>
+<td>kernel, 29 MB</td>
+</tr>
+<tr>
+<td><code>modules/lib/modules/7.3.0-rc5-00040-g54bf2745aa8e/</code></td>
+<td>modules (29 MB, stripped), including <code>kernel/drivers/gpu/drm/imagination/powervr.ko</code></td>
+</tr>
+<tr>
+<td><code>dtbs/starfive/jh7110-milkv-mars.dtb</code></td>
+<td>Mars devicetree (also the VF2 and other JH7110 DTBs)</td>
+</tr>
+<tr>
+<td><code>kernel.config</code></td>
+<td>final <code>.config</code></td>
+</tr>
+<tr>
+<td><code>kernel.release</code></td>
+<td>release string</td>
+</tr>
+</tbody>
+</table>
+<p>The outputs above are from the latest clean build, which includes the containers fragment.</p>
+<p>Built in the config: <code>DRM</code>, <code>DRM_VERISILICON_DC</code>, <code>DRM_DISPLAY_CONNECTOR</code>, <code>CLK_STARFIVE_JH7110_VOUT</code>, <code>DMA_CMA</code>. Only <code>powervr</code> is a module.</p>
+<h2 id="notes">Notes</h2>
+<ul>
+<li>The reference config also sets <code>CMA_SIZE_MBYTES=128</code> while the devicetree reserves 512 MiB. See <code>dts-notes.md</code> (open item 3) on what <code>cma=</code> does.</li>
+<li>The build uses upstream <code>defconfig</code> as a base, not a distro config. Checked in <code>kernel.config</code>: the SD/eMMC controller (<code>MMC_DW_STARFIVE</code>), <code>EXT4_FS</code> and <code>VFAT_FS</code> are built in, so booting from SD or eMMC needs no initramfs. The Ethernet driver (<code>DWMAC_STARFIVE</code>, <code>STMMAC_ETH</code>) is a module, so an NFS root would need an initramfs, or those drivers switched to <code>=y</code>. Decide this in Phase 5/6 if we choose network boot.</li>
+<li>Not done in this phase: firmware and rootfs (Phase 6), bootloader (Phase 5), QEMU test (Phase 4).</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": [], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

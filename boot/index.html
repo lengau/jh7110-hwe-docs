@@ -1,0 +1,869 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../qemu-smoke/">
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Boot firmware and bootloader - Milk-V Mars GPU Bring-up</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#boot-firmware-and-bootloader-phase-5" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Milk-V Mars GPU Bring-up" class="md-header__button md-logo" aria-label="Milk-V Mars GPU Bring-up" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Milk-V Mars GPU Bring-up
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Boot firmware and bootloader
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Milk-V Mars GPU Bring-up" class="md-nav__button md-logo" aria-label="Milk-V Mars GPU Bring-up" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Milk-V Mars GPU Bring-up
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../host-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Host setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sources/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sources and pinned commits
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dts-notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Devicetree analysis
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kernel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kernel build
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../qemu-smoke/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    QEMU smoke test
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Boot firmware and bootloader
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Boot firmware and bootloader
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-the-mars-needs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the Mars needs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#build" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Build
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#artifacts-mars-gpuoutboot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Artifacts (~/mars-gpu/out/boot/)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#flash-layout-and-boot-modes-from-jh7110_commonrst" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flash layout and boot modes (from jh7110_common.rst)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Flash layout and boot modes (from jh7110_common.rst)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#recommendation-for-the-first-boots" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recommendation for the first boots
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#booting-our-kernel-from-u-boot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Booting our kernel from U-Boot
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#not-done-still-to-decide" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Not done / still to decide
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-the-mars-needs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the Mars needs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#build" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Build
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#artifacts-mars-gpuoutboot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Artifacts (~/mars-gpu/out/boot/)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#flash-layout-and-boot-modes-from-jh7110_commonrst" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flash layout and boot modes (from jh7110_common.rst)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Flash layout and boot modes (from jh7110_common.rst)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#recommendation-for-the-first-boots" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recommendation for the first boots
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#booting-our-kernel-from-u-boot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Booting our kernel from U-Boot
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#not-done-still-to-decide" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Not done / still to decide
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="boot-firmware-and-bootloader-phase-5">Boot firmware and bootloader (Phase 5)</h1>
+<p>Built 2026-10-07 on ubhejane. <strong>Build only: nothing has been flashed or written to any board.</strong></p>
+<h2 id="what-the-mars-needs">What the Mars needs</h2>
+<ul>
+<li><strong>No separate Mars U-Boot target.</strong> U-Boot's <code>milk-v_mars.rst</code> says: <em>"U-Boot for the Milk-V Mars uses the same U-Boot binaries as the VisionFive 2 board. In U-Boot SPL the actual board is detected and the device-tree patched accordingly."</em> The build uses <code>starfive_visionfive2_defconfig</code>. The board is identified from the I2C EEPROM product ID (<code>MARS...</code>), and U-Boot then sets <code>fdtfile=starfive/jh7110-milkv-mars.dtb</code>. The FIT image contains the Mars DTB, among others (<code>board/starfive/visionfive2/spl.c</code>, <code>starfive_visionfive2.c</code>).</li>
+<li>OpenSBI must be v1.5 or newer, generic platform, <code>fw_dynamic.bin</code>. U-Boot's doc example uses v1.7. We use <strong>v1.9</strong> (newest tag). If it misbehaves on the board, try v1.7 (the tag the doc names).</li>
+<li>Boot chain: BootROM, then U-Boot SPL (initializes DRAM and PLLs), then OpenSBI <code>fw_dynamic</code> plus U-Boot proper (one FIT image, <code>u-boot.itb</code>), then the kernel via <code>bootstd</code>. The enabled boot methods include <code>extlinux</code>, EFI loader and EFI boot manager, so both an <code>extlinux.conf</code> and a GRUB-EFI install can be booted.</li>
+</ul>
+<h2 id="build">Build</h2>
+<pre><code>~/mars-gpu/scripts/build-uboot.sh          # CLEAN=1 to wipe the build dirs; JOBS=80 by default
+</code></pre>
+<p>Log: <code>~/mars-gpu/logs/build-uboot.log</code>. Takes under a minute. Sources: <code>worktrees/opensbi</code> (<code>v1.9</code>) and <code>worktrees/u-boot</code> (<code>v2026.07</code>); see <code>sources.md</code>. The script:</p>
+<ol>
+<li>Builds OpenSBI: <code>make PLATFORM=generic</code> into <code>build/opensbi</code>, giving <code>platform/generic/firmware/fw_dynamic.bin</code>.</li>
+<li>Builds U-Boot with <code>starfive_visionfive2_defconfig</code> and <code>OPENSBI=&lt;that fw_dynamic.bin&gt;</code> into <code>build/u-boot</code>.</li>
+<li>Builds a second, <strong>debug-UART</strong> variant in <code>build/u-boot-debuguart</code>, with the config changes from U-Boot's doc (<code>DEBUG_UART_NS16550</code>, base <code>0x10000000</code>, clock 24 MHz, shift 2, SBI debug console off, and the same for SPL). SPL is silent without these, because U-Boot proper uses the SBI console. This variant gives output from SPL on the first bring-up.</li>
+</ol>
+<p>Both builds use a cross-compiler <code>riscv64-linux-gnu-</code> (GCC 13.3).</p>
+<h2 id="artifacts-mars-gpuoutboot">Artifacts (<code>~/mars-gpu/out/boot/</code>)</h2>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Size</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>default/u-boot-spl.bin.normal.out</code></td>
+<td>152,105 B</td>
+<td>SPL with the StarFive header (what the BootROM loads)</td>
+</tr>
+<tr>
+<td><code>default/u-boot.itb</code></td>
+<td>1,631,245 B</td>
+<td>FIT: U-Boot main (load <code>0x40200000</code>) + OpenSBI (<code>0x40000000</code>) + the board DTBs</td>
+</tr>
+<tr>
+<td><code>debuguart/u-boot-spl.bin.normal.out</code>, <code>debuguart/u-boot.itb</code></td>
+<td>152,417 B and 1,631,357 B</td>
+<td>same, with an early debug UART</td>
+</tr>
+<tr>
+<td><code>default/.config</code>, <code>debuguart/.config</code></td>
+<td></td>
+<td>final U-Boot configs</td>
+</tr>
+<tr>
+<td><code>fw_dynamic.bin</code></td>
+<td></td>
+<td>OpenSBI payload used</td>
+</tr>
+<tr>
+<td><code>SHA256SUMS</code></td>
+<td></td>
+<td>checksums of all of the above</td>
+</tr>
+</tbody>
+</table>
+<p>U-Boot reports <code>U-Boot 2026.07</code> in the binary. The FIT contains DTBs for the Mars, <code>marscm-emmc</code>, <code>marscm-lite</code>, VisionFive 2 (v1.2a, v1.3b, lite), Star64, Orange Pi RV and DeepComputing FML13V01.</p>
+<h2 id="flash-layout-and-boot-modes-from-jh7110_commonrst">Flash layout and boot modes (from <code>jh7110_common.rst</code>)</h2>
+<p>Boot-source selection uses the RGPIO1:RGPIO0 strap pins, which the board exposes as boot-mode switches or jumpers. <strong>Check how the Mars exposes them before touching anything (Phase 8).</strong> For SPL:</p>
+<table>
+<thead>
+<tr>
+<th>RGPIO1:RGPIO0</th>
+<th>U-Boot SPL loads U-Boot from</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0:0</td>
+<td>QSPI NOR, offset <code>0x100000</code></td>
+</tr>
+<tr>
+<td>0:1</td>
+<td>SD (MMC2), a raw or partition location</td>
+</tr>
+<tr>
+<td>1:0</td>
+<td>eMMC (MMC1), a raw or partition location</td>
+</tr>
+<tr>
+<td>1:1</td>
+<td>UART (YMODEM), the recovery mode</td>
+</tr>
+</tbody>
+</table>
+<p>The U-Boot doc calls the SD and eMMC BootROM modes <em>deprecated</em> (the BootROM driver does not work with some SD cards), and recommends QSPI. QSPI NOR layout (16 MB):</p>
+<table>
+<thead>
+<tr>
+<th>Offset</th>
+<th>Length</th>
+<th>Content</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>0x000000</code></td>
+<td><code>0x0f0000</code></td>
+<td><code>u-boot-spl.bin.normal.out</code></td>
+</tr>
+<tr>
+<td><code>0x0f0000</code></td>
+<td><code>0x010000</code></td>
+<td>U-Boot environment</td>
+</tr>
+<tr>
+<td><code>0x100000</code></td>
+<td><code>0xf00000</code></td>
+<td><code>u-boot.itb</code></td>
+</tr>
+</tbody>
+</table>
+<p>For SD cards the BootROM reads the GPT header from sector 1 and loads SPL from the partition whose type GUID is <code>2E54B353-1271-4842-806F-E436D6AF6985</code> (from the doc; eMMC loads SPL from sector 0 instead).</p>
+<p>Updating QSPI from the U-Boot console (<code>sf probe</code>, <code>loady &amp;&amp; sf update $loadaddr 0 $filesize</code>, <code>env erase</code>, then <code>sf update ... 100000</code>) or from Linux (<code>flashcp</code> on <code>/dev/mtd0</code> to <code>mtd2</code>) is described in the U-Boot doc. <strong>Not done, and not needed for the first tests.</strong></p>
+<h3 id="recommendation-for-the-first-boots">Recommendation for the first boots</h3>
+<ul>
+<li>Don't overwrite the board's QSPI at first. Keep the vendor/Ubuntu U-Boot there as the known-good fallback. If a flash goes wrong, the recovery path is UART mode (1:1) plus a YMODEM load, which needs the serial console.</li>
+<li>To test our U-Boot build, use the SD (or UART) boot mode with our SPL/itb on the card, if the Mars switches allow it. Decide this in Phase 8 once we have seen what the board does and what boot media it has.</li>
+<li>Use the <code>debuguart</code> variant for the first bring-up.</li>
+</ul>
+<h2 id="booting-our-kernel-from-u-boot">Booting our kernel from U-Boot</h2>
+<p>U-Boot's <code>bootstd</code> scans for <code>extlinux/extlinux.conf</code> and EFI binaries on the boot devices (NVMe and USB are scanned in <code>preboot</code>, SD/eMMC as usual). The kernel needs <strong>our</strong> DTB, not U-Boot's own (which comes from upstream Linux 7.x and does not have the GPU and HDMI nodes). Options:</p>
+<ol>
+<li><strong>extlinux</strong> (simplest, deterministic). <code>/boot/extlinux/extlinux.conf</code> on the rootfs or boot partition, using <code>fdtdir</code> so that U-Boot picks <code>$fdtdir/$fdtfile</code> (<code>starfive/jh7110-milkv-mars.dtb</code> on a Mars). Draft, to be finalized in Phase 7 with the real image layout:</li>
+</ol>
+<p><code>default mars-gpu
+   timeout 30
+   label mars-gpu
+       menu label Mars GPU kernel (7.3.0-rc5-00040-g54bf2745aa8e)
+       kernel /boot/vmlinuz-7.3.0-rc5-00040-g54bf2745aa8e
+       initrd /boot/initrd.img-7.3.0-rc5-00040-g54bf2745aa8e
+       fdtdir /boot/dtbs/7.3.0-rc5-00040-g54bf2745aa8e/
+       append root=LABEL=cloudimg-rootfs rw rootwait console=ttyS0,115200 earlycon=sbi</code></p>
+<p>The DTBs are at <code>~/mars-gpu/out/dtbs/starfive/</code>, and <code>fdtdir</code> expects them below <code>/boot/dtbs/&lt;release&gt;/starfive/</code>.
+2. <strong>GRUB EFI</strong> as in the Ubuntu image: Ubuntu's GRUB can load <code>/boot/dtb-&lt;release&gt;</code> if present, but it must then be the Mars DTB. Ubuntu's own image uses this route, so check how its <code>+jh7110</code> image handles the DTB in Phase 8 before choosing.</p>
+<p>Kernel command line notes:</p>
+<ul>
+<li><code>console=ttyS0,115200 earlycon=sbi</code> matches U-Boot's own default (<code>console=ttyS0,115200 debug rootwait earlycon=sbi</code>).</li>
+<li>Whether to add <code>cma=128M</code> is an open item (<code>dts-notes.md</code>, item 3). The first Mars boot should be without it, then with it.</li>
+</ul>
+<h2 id="not-done-still-to-decide">Not done / still to decide</h2>
+<ul>
+<li>Whether to ship the QEMU-style Ubuntu image's GRUB or use extlinux for the board image (Phase 7).</li>
+<li>Verifying that OpenSBI 1.9 works on the board (fallback: v1.7).</li>
+<li>The Mars boot-mode switch positions, and what the board boots from now (Phase 8).</li>
+<li>Nothing has been run on hardware. U-Boot can't be tested in QEMU for this board, because QEMU has no JH7110 machine.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": [], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>
