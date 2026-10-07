@@ -10,12 +10,10 @@ nav:
   - QEMU smoke test: qemu-smoke.md
   - Boot firmware and bootloader: boot.md
   - Root filesystem: rootfs.md
-
 # Configuration for GitHub Pages deployment
 # This setup uses the Material for MkDocs theme and targets the 'gh-pages' branch
 theme:
   name: material
-
 site_dir: ../site
 # Setting the baseurl is crucial for GitHub Pages if the repo is not hosted at the root domain
 # baseurl: ""

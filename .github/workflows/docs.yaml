@@ -1,43 +1,34 @@
 name: Publish Documentation
-
 on:
   push:
     branches:
       - main
   workflow_dispatch:
-
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
-
 permissions:
   contents: write
   pages: write
   id-token: write
-
 jobs:
   build-and-deploy:
     runs-on: ubuntu-slim
     steps:
-    - uses: actions/checkout@v4
-      with:
-        fetch-depth: 0 # Fetch all history for full Git operations
-
-    - name: Install uv
-      uses: astral-sh/setup-uv@v5
-
-    - name: Install dependencies
-      run: |
-        uv sync
-
-    - name: Build MkDocs site
-      run: uv run mkdocs build --strict --config-file docs/mkdocs.yaml
-
-    - name: Upload Pages Artifact
-      uses: actions/upload-pages-artifact@v3
-      with:
-        path: site
-
-    - name: Deploy to GitHub Pages
-      id: deployment
-      uses: actions/deploy-pages@v4
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Fetch all history for full Git operations
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+      - name: Install dependencies
+        run: |
+          uv sync
+      - name: Build MkDocs site
+        run: uv run mkdocs build --strict --config-file docs/mkdocs.yaml
+      - name: Upload Pages Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

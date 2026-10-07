@@ -274,6 +274,7 @@ dev = [
 
 [package.dev-dependencies]
 dev = [
+    { name = "google-yamlfmt" },
     { name = "tombi" },
 ]
 
@@ -287,7 +288,10 @@ requires-dist = [
 provides-extras = ["dev"]
 
 [package.metadata.requires-dev]
-dev = [{ name = "tombi", specifier = ">=1.7.3" }]
+dev = [
+    { name = "google-yamlfmt", specifier = ">=0.5.1" },
+    { name = "tombi", specifier = ">=1.7.3" },
+]
 
 [[package]]
 name = "jinja2"

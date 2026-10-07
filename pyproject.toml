@@ -3,8 +3,8 @@ name = "jh7110-hwe-docs"
 version = "0.0.1"
 requires-python = ">=3.10"
 dependencies = [
-    "mkdocs>=1.6,<2",
-    "mkdocs-material>=9.0,<10",
+  "mkdocs>=1.6,<2",
+  "mkdocs-material>=9.0,<10",
 ]
 
 [project.scripts]
@@ -19,4 +19,5 @@ dev = [
 [dependency-groups]
 dev = [
     "tombi>=1.7.3",
+    "google-yamlfmt>=0.5.1",
 ]

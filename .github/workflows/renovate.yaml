@@ -1,35 +1,26 @@
 name: Renovate
-
 on:
   push:
     branches:
       - main
-
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
-
 permissions:
   contents: write
   id-token: write
   pull-requests: write
-
 jobs:
   renovate:
     runs-on: ubuntu-slim
     steps:
       - uses: actions/checkout@v4
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-
       - name: Install renovate
         run: npm install -g renovate
-
       - name: Dispatch Renovate PR
         run: |
           npx renovate --base-branch main
-
- 
