@@ -10,6 +10,11 @@ dependencies = [
 [project.scripts]
 mkdocs = "mkdocs.main:main"
 
+[project.optional-dependencies]
+dev = [
+    "tombi>=0.2.0",
+]
+
 [dependency-groups]
 dev = [
     "tombi>=1.7.3",

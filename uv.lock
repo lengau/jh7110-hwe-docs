@@ -248,6 +248,11 @@ dependencies = [
     { name = "mkdocs-material" },
 ]
 
+[package.optional-dependencies]
+dev = [
+    { name = "tombi" },
+]
+
 [package.dev-dependencies]
 dev = [
     { name = "tombi" },
@@ -257,7 +262,9 @@ dev = [
 requires-dist = [
     { name = "mkdocs", specifier = ">=1.6,<2" },
     { name = "mkdocs-material", specifier = ">=9.0,<10" },
+    { name = "tombi", marker = "extra == 'dev'", specifier = ">=0.2.0" },
 ]
+provides-extras = ["dev"]
 
 [package.metadata.requires-dev]
 dev = [{ name = "tombi", specifier = ">=1.7.3" }]
