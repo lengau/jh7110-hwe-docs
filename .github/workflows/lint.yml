@@ -25,4 +25,4 @@ jobs:
 
       - name: Format TOML files
         run: |
-          uv run tombi lint --check
+          uv run tombi lint
