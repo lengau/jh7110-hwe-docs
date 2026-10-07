@@ -1,0 +1,17 @@
+name: Renovate
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  renovate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Dispatch Renovate PR
+        uses: renovatebot/github-action@v22
+        with:
+          token: ${{ secrets.RENOVATE_TOKEN }}

@@ -1,2 +1,6 @@
 site/
 .venv/
+.terraform/
+terraform.tfstate*
+.terraform.lock.hcl
+renovate.json
