@@ -9,5 +9,6 @@ nav:
   - Kernel build: kernel.md
   - QEMU smoke test: qemu-smoke.md
   - Boot firmware and bootloader: boot.md
+  - Root filesystem: rootfs.md
   - HWE Stack:
       - Plan: hwe-stack/plan.md

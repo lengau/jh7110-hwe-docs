@@ -19,17 +19,13 @@ jobs:
       with:
         fetch-depth: 0 # Fetch all history for full Git operations
 
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.10'
+    - name: Install uv
+      uses: astral-sh/setup-uv@v5
 
     - name: Install dependencies
       run: |
-        python3 -m pip install --upgrade pip
-        pip install -r requirements-docs.txt
-        # Install mkdocs-material if not in requirements-docs.txt (common practice)
-        pip install mkdocs-material
+        uv sync
+        uv pip install mkdocs-material
 
     - name: Build MkDocs site
       run: mkdocs build --strict --config-file docs/mkdocs.yaml

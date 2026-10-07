@@ -121,6 +121,8 @@ Known limits: TCG emulation on x86 is slow but fine for a smoke test. KVM on the
 
 ### Phase 6: Root filesystem
 
+**Status: mostly done 2026-10-07. See `rootfs.md`.** Ubuntu 24.04.5 chosen (26.04 is RVA23-only and unusable on the JH7110), Mesa 26.2.3 built for riscv64 with the PowerVR Vulkan driver + zink + llvmpipe into `/usr/local`, pinned GPU firmware identified. Image assembly (Mesa install, firmware, benchmark packages, extlinux) still open for Phase 7. The text below is the original plan.
+
 - Build a riscv64 rootfs with `mmdebstrap --arch=riscv64` into `out/rootfs/` (Debian sid or trixie, whichever has Mesa 26.2.x; check the version first), running under qemu-user.
 - Packages: `mesa-vulkan-drivers`, `vulkan-tools`, `vkmark`, `glmark2-es2-wayland`, `labwc`, `weston`, `sway`, `openssh-server`, `kmod`, `linux-base`, `systemd-sysv`, `network-manager` or `systemd-networkd`, `sudo`, `libdrm-tests`, and `mesa-utils`.
 - Install the pinned GPU firmware into `/lib/firmware/powervr/`, the kernel modules from `out/modules/`, and the test scripts from the reference repo. Set up users, the `render` and `video` groups, the hostname, an SSH key and a serial getty on `ttyS0` at 115200.

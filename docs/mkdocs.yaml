@@ -9,6 +9,7 @@ nav:
   - Kernel build: kernel.md
   - QEMU smoke test: qemu-smoke.md
   - Boot firmware and bootloader: boot.md
+  - Root filesystem: rootfs.md
 
 # Configuration for GitHub Pages deployment
 # This setup uses the Material for MkDocs theme and targets the 'gh-pages' branch
