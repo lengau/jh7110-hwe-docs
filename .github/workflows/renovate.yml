@@ -26,6 +26,6 @@ jobs:
 
       - name: Dispatch Renovate PR
         run: |
-          npx renovate --repository-name ${{ github.repository }} --base-branch main
+          npx renovate --base-branch main
 
  
