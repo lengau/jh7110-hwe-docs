@@ -15,7 +15,7 @@ nav:
 theme:
   name: material
 
-site_dir: site
+site_dir: ../site
 # Setting the baseurl is crucial for GitHub Pages if the repo is not hosted at the root domain
 # baseurl: ""
 
