@@ -19,12 +19,11 @@ jobs:
       with:
         fetch-depth: 0 # Fetch all history for full Git operations
 
-    - name: Install uv
+   - name: Install uv
       uses: astral-sh/setup-uv@v5
 
     - name: Install dependencies
       run: |
-        uv sync
         uv pip install mkdocs-material
 
     - name: Build MkDocs site
