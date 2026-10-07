@@ -26,3 +26,7 @@ jobs:
       - name: Format TOML files
         run: |
           uv run tombi lint
+
+    - name: Format YAML files
+        run: |
+          uv run yamlfmt --check
