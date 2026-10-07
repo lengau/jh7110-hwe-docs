@@ -5,5 +5,12 @@ requires-python = ">=3.10"
 dependencies = [
     "mkdocs>=1.6,<2",
     "mkdocs-material>=9.0,<10",
-    "tombi>=0.2.0",
+]
+
+[project.scripts]
+mkdocs = "mkdocs.main:main"
+
+[dependency-groups]
+dev = [
+    "tombi>=1.7.3",
 ]

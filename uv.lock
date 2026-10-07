@@ -246,6 +246,10 @@ source = { virtual = "." }
 dependencies = [
     { name = "mkdocs" },
     { name = "mkdocs-material" },
+]
+
+[package.dev-dependencies]
+dev = [
     { name = "tombi" },
 ]
 
@@ -253,8 +257,10 @@ dependencies = [
 requires-dist = [
     { name = "mkdocs", specifier = ">=1.6,<2" },
     { name = "mkdocs-material", specifier = ">=9.0,<10" },
-    { name = "tombi", specifier = ">=0.2.0" },
 ]
+
+[package.metadata.requires-dev]
+dev = [{ name = "tombi", specifier = ">=1.7.3" }]
 
 [[package]]
 name = "jinja2"
