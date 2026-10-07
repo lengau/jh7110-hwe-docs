@@ -6,7 +6,7 @@ on:
       - main
 
 concurrency:
-  group: main
+  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 permissions:
