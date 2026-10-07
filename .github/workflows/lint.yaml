@@ -22,4 +22,4 @@ jobs:
           uv run tombi lint
       - name: Format YAML files
         run: |
-          uv run yamlfmt --check
+          uv run yamlfmt -check

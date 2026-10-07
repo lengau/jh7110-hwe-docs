@@ -1,14 +1,13 @@
 repos:
-  -   repo: local
-      hooks:
-        - id: yamlfmt
-          name: Format YAML files
-          entry: yamlfmt
-          language: system
-          files: \.(yaml|yml)$
-
-        - id: tombi
-          name: Format TOML files
-          entry: tombi
-          language: system
-          files: \.(toml)$
+  - repo: local
+    hooks:
+      - id: yamlfmt
+        name: Format YAML files
+        entry: yamlfmt .
+        language: system
+        files: \.(yaml|yml)$
+      - id: tombi
+        name: Format TOML files
+        entry: tombi
+        language: system
+        files: \.(toml)$
