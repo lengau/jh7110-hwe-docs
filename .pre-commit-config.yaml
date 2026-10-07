@@ -8,6 +8,13 @@ repos:
         files: \.(yaml|yml)$
       - id: tombi
         name: Format TOML files
-        entry: tombi
+        entry: tombi format
         language: system
         files: \.(toml)$
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-toml
